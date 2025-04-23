@@ -1,0 +1,22 @@
+db:
+  url: jdbc:postgresql://localhost:5432/hibernatetutorial
+  username: postgres
+  password: 2177
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auction
+    username: postgres
+    password: 2177
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: validate
+    open-in-view: false

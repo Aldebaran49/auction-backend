@@ -1,0 +1,24 @@
+package ru.andreev.auction.mapper;
+
+import org.springframework.stereotype.Component;
+import ru.andreev.auction.dto.BidReadDto;
+import ru.andreev.auction.entity.Bid;
+import ru.andreev.auction.repository.LotRepository;
+import ru.andreev.auction.repository.UserRepository;
+
+import java.util.Map;
+
+@Component
+public class BidReadMapper implements Mapper<Bid, BidReadDto> {
+    UserRepository userRepository;
+    LotRepository lotRepository;
+    @Override
+    public BidReadDto map(Bid bid) {
+        return new BidReadDto(
+                bid.getAmount(),
+                bid.getBidTime(),
+                bid.getUser().getId(),
+                bid.getLot().getId()
+        );
+    }
+}
