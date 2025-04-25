@@ -38,8 +38,8 @@ public class UserService {
                 .orElseThrow();
     }
     @Transactional
-    public Optional<UserReadDto> update(UserCreateEditDto user, Long id) {
-        return userRepository.findById(id).map(u -> userCreateEditMapper.map(user, u))
+    public Optional<UserReadDto> update(UserCreateEditDto dto, Long id) {
+        return userRepository.findById(id).map(u -> userCreateEditMapper.map(dto, u))
                 .map(userRepository::saveAndFlush)
                 .map(userReadMapper::map);
     }

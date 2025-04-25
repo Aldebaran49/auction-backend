@@ -7,12 +7,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Value
-public class LotReadDto {
-    Long id;
+public class LotCreateEditDto {
     String title;
     String description;
     BigDecimal price;
-    LocalDateTime createdAt;
     LocalDateTime expiredAt;
-    List<BidReadDto> bids;
 }
