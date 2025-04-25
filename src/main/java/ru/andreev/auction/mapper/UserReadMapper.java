@@ -1,12 +1,14 @@
 package ru.andreev.auction.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.andreev.auction.dto.UserReadDto;
 import ru.andreev.auction.entity.User;
 
 @Component
+@RequiredArgsConstructor
 public class UserReadMapper implements Mapper<User, UserReadDto>{
-    BidReadMapper bidReadMapper;
+    private final BidReadMapper bidReadMapper;
     @Override
     public UserReadDto map(User user) {
         UserReadDto dto = new UserReadDto(
