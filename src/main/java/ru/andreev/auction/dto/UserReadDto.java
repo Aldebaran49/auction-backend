@@ -19,5 +19,5 @@ public class UserReadDto {
 
     Role role;
 
-    List<BidReadDto> bids;
+    List<Long> bidIDs;
 }

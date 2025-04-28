@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 @Value
 public class BidReadDto {
+    Long id;
+
     BigDecimal amount;
 
     LocalDateTime bidTime;
 
-   //Переделать на dto
     Long userId;
 
-    //Переделать на dto
     Long lotId;
 }

@@ -15,6 +15,7 @@ public class BidReadMapper implements Mapper<Bid, BidReadDto> {
     @Override
     public BidReadDto map(Bid bid) {
         return new BidReadDto(
+                bid.getId(),
                 bid.getAmount(),
                 bid.getBidTime(),
                 bid.getUser().getId(),

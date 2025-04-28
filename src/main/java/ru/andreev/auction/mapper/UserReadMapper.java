@@ -3,22 +3,21 @@ package ru.andreev.auction.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.andreev.auction.dto.UserReadDto;
+import ru.andreev.auction.entity.Bid;
 import ru.andreev.auction.entity.User;
 
 @Component
 @RequiredArgsConstructor
 public class UserReadMapper implements Mapper<User, UserReadDto>{
-    private final BidReadMapper bidReadMapper;
     @Override
     public UserReadDto map(User user) {
-        UserReadDto dto = new UserReadDto(
+        return new UserReadDto(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
                 user.getEmail(),
                 user.getRole(),
-                user.getBids().stream().map(bidReadMapper::map).toList()
+                user.getBids().stream().map(Bid::getId).toList()
         );
-        return dto;
     }
 }
