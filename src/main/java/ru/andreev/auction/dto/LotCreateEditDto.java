@@ -1,5 +1,6 @@
 package ru.andreev.auction.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Value;
 
 import java.math.BigDecimal;
@@ -11,5 +12,6 @@ public class LotCreateEditDto {
     String title;
     String description;
     BigDecimal price;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     LocalDateTime expiredAt;
 }

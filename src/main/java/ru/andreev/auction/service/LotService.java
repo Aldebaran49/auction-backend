@@ -2,6 +2,7 @@ package ru.andreev.auction.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.andreev.auction.dto.LotCreateEditDto;
 import ru.andreev.auction.dto.LotReadDto;
 import ru.andreev.auction.mapper.LotCreateEditMapper;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LotService {
     private final LotRepository lotRepository;
     private final LotCreateEditMapper lotCreateEditMapper;
@@ -24,6 +26,7 @@ public class LotService {
     public LotReadDto findById(Long id) {
         return lotRepository.findById(id).map(lotReadMapper::map).orElse(null);
     }
+    @Transactional
     public LotReadDto create (LotCreateEditDto dto) {
         return Optional.of(dto)
                 .map(lotCreateEditMapper::map)
@@ -31,12 +34,14 @@ public class LotService {
                 .map(lotReadMapper::map)
                 .orElse(null);
     }
+    @Transactional
     public Optional<LotReadDto> update (Long id, LotCreateEditDto dto) {
         return lotRepository.findById(id)
                 .map(l -> lotCreateEditMapper.map(dto, l))
                 .map(lotRepository::saveAndFlush)
                 .map(lotReadMapper::map);
     }
+    @Transactional
     public boolean delete (Long id) {
         return lotRepository.findById(id)
                 .map(l -> {
