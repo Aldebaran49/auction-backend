@@ -14,5 +14,5 @@ public class LotReadDto {
     BigDecimal price;
     LocalDateTime createdAt;
     LocalDateTime expiredAt;
-    List<BidReadDto> bids;
+    List<Long> bidIDs;
 }

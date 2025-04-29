@@ -3,6 +3,7 @@ package ru.andreev.auction.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.andreev.auction.dto.LotReadDto;
+import ru.andreev.auction.entity.Bid;
 import ru.andreev.auction.entity.Lot;
 
 @Component
@@ -18,7 +19,7 @@ public class LotReadMapper implements Mapper<Lot, LotReadDto> {
                 lot.getPrice(),
                 lot.getCreatedAt(),
                 lot.getExpiredAt(),
-                lot.getBids().stream().map(bidReadMapper::map).toList()
+                lot.getBids().stream().map(Bid::getId).toList()
         );
     }
 }

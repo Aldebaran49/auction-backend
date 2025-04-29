@@ -33,4 +33,14 @@ public class Bid {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lot_id")
     Lot lot;
+
+    public void setUser(User user) {
+        this.user = user;
+        this.user.getBids().add(this);
+    }
+
+    public void setLot(Lot lot) {
+        this.lot = lot;
+        this.lot.getBids().add(this);
+    }
 }
