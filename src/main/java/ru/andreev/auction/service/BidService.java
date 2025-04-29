@@ -3,10 +3,7 @@ package ru.andreev.auction.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.andreev.auction.dto.BidCreateEditDto;
-import ru.andreev.auction.dto.BidReadDto;
-import ru.andreev.auction.dto.LotCreateEditDto;
-import ru.andreev.auction.dto.LotReadDto;
+import ru.andreev.auction.dto.*;
 import ru.andreev.auction.mapper.BidCreateEditMapper;
 import ru.andreev.auction.mapper.BidReadMapper;
 import ru.andreev.auction.repository.BidRepository;
@@ -21,6 +18,7 @@ public class BidService {
     private final BidRepository bidRepository;
     private final BidReadMapper bidReadMapper;
     private final BidCreateEditMapper bidCreateEditMapper;
+    private final LotService lotService;
 
     public List<BidReadDto> findAll() {
         return bidRepository.findAll().stream().map(bidReadMapper::map).toList();
@@ -29,12 +27,24 @@ public class BidService {
         return bidRepository.findById(id).map(bidReadMapper::map).orElse(null);
     }
     @Transactional
-    public BidReadDto create (BidCreateEditDto dto) {
-        return Optional.of(dto)
-                .map(bidCreateEditMapper::map)
-                .map(bidRepository::save)
-                .map(bidReadMapper::map)
-                .orElse(null);
+    public BidCreateResponse create (BidCreateEditDto dto) {
+        if (checkBidForCorrection(dto)) {
+            lotService.updateAmount(dto.getLotId(), dto.getAmount());
+            return new BidCreateResponse(
+                    Optional.of(dto)
+                            .map(bidCreateEditMapper::map)
+                            .map(bidRepository::save)
+                            .map(bidReadMapper::map)
+                            .orElse(null),
+                    true
+            );
+        }
+        else {
+            return new BidCreateResponse(
+                    null,
+                    false
+            );
+        }
     }
     @Transactional
     public Optional<BidReadDto> update (Long id, BidCreateEditDto dto) {
@@ -51,6 +61,10 @@ public class BidService {
                     bidRepository.flush();
                     return true;
                 }).orElse(false);
+    }
+
+    public boolean checkBidForCorrection(BidCreateEditDto dto) {
+        return dto.getAmount().compareTo(lotService.findById(dto.getLotId()).getPrice()) > 0;
     }
 
 }

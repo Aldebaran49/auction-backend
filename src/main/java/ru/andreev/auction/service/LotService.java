@@ -3,12 +3,14 @@ package ru.andreev.auction.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.andreev.auction.dto.BidCreateEditDto;
 import ru.andreev.auction.dto.LotCreateEditDto;
 import ru.andreev.auction.dto.LotReadDto;
 import ru.andreev.auction.mapper.LotCreateEditMapper;
 import ru.andreev.auction.mapper.LotReadMapper;
 import ru.andreev.auction.repository.LotRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,5 +51,17 @@ public class LotService {
                     lotRepository.flush();
                     return true;
                 }).orElse(false);
+    }
+
+    public void updateAmount(Long lotId, BigDecimal amount) {
+        LotReadDto oldLotDto = findById(lotId);
+        LotCreateEditDto newLotDto = new LotCreateEditDto(
+                oldLotDto.getTitle(),
+                oldLotDto.getDescription(),
+                amount,
+                oldLotDto.getCreatedAt(),
+                oldLotDto.getExpiredAt()
+        );
+        update(lotId, newLotDto);
     }
 }

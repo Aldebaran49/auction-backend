@@ -3,6 +3,7 @@ package ru.andreev.auction.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.andreev.auction.dto.BidCreateEditDto;
+import ru.andreev.auction.dto.BidCreateResponse;
 import ru.andreev.auction.dto.BidReadDto;
 import ru.andreev.auction.service.BidService;
 
@@ -25,7 +26,7 @@ public class BidRestController {
     }
 
     @PostMapping("")
-    public BidReadDto create(BidCreateEditDto bidCreateEditDto) {
+    public BidCreateResponse create(BidCreateEditDto bidCreateEditDto) {
         return bidService.create(bidCreateEditDto);
     }
 

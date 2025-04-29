@@ -9,23 +9,24 @@ import java.time.LocalDateTime;
 @Component
 public class LotCreateEditMapper implements Mapper<LotCreateEditDto, Lot> {
     @Override
-    public Lot map(LotCreateEditDto object) {
-        Lot lot = new Lot();
-        copy(object, lot);
-        return lot;
-    }
-
-    @Override
-    public Lot map(LotCreateEditDto fromObject, Lot toObject) {
-        copy(fromObject, toObject);
-        return toObject;
-    }
-
-    public void copy (LotCreateEditDto from, Lot to) {
+    public Lot map(LotCreateEditDto from) {
+        Lot to = new Lot();
         to.setCreatedAt(LocalDateTime.now());
         to.setExpiredAt(from.getExpiredAt());
         to.setDescription(from.getDescription());
         to.setTitle(from.getTitle());
         to.setPrice(from.getPrice());
+        return to;
     }
+
+    @Override
+    public Lot map(LotCreateEditDto from, Lot to) {
+        to.setCreatedAt(from.getCreatedAt());
+        to.setExpiredAt(from.getExpiredAt());
+        to.setDescription(from.getDescription());
+        to.setTitle(from.getTitle());
+        to.setPrice(from.getPrice());
+        return to;
+    }
+
 }

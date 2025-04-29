@@ -12,6 +12,6 @@ public class LotCreateEditDto {
     String title;
     String description;
     BigDecimal price;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    LocalDateTime createdAt;
     LocalDateTime expiredAt;
 }
