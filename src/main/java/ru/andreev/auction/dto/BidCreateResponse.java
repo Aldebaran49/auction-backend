@@ -6,4 +6,5 @@ import lombok.Value;
 public class BidCreateResponse {
     BidReadDto dto;
     boolean status;
+    String message;
 }

@@ -28,7 +28,9 @@ public class BidService {
     }
     @Transactional
     public BidCreateResponse create (BidCreateEditDto dto) {
-        if (checkBidForCorrection(dto)) {
+        boolean isAmountCorrect = checkBidForCorrectAmount(dto);
+        boolean isTimeCorrect = checkBidForCorrectTime(dto);
+        if (isAmountCorrect && isTimeCorrect) {
             lotService.updateAmount(dto.getLotId(), dto.getAmount());
             return new BidCreateResponse(
                     Optional.of(dto)
@@ -36,13 +38,22 @@ public class BidService {
                             .map(bidRepository::save)
                             .map(bidReadMapper::map)
                             .orElse(null),
-                    true
+                    true,
+                    "Bid created successfully"
+            );
+        }
+        else if (!isAmountCorrect) {
+            return new BidCreateResponse(
+                    null,
+                    false,
+                    "Bid amount should be greater than lot current price"
             );
         }
         else {
             return new BidCreateResponse(
                     null,
-                    false
+                    false,
+                    "Lot expired"
             );
         }
     }
@@ -63,8 +74,12 @@ public class BidService {
                 }).orElse(false);
     }
 
-    public boolean checkBidForCorrection(BidCreateEditDto dto) {
+    public boolean checkBidForCorrectAmount(BidCreateEditDto dto) {
         return dto.getAmount().compareTo(lotService.findById(dto.getLotId()).getPrice()) > 0;
+    }
+
+    public boolean checkBidForCorrectTime(BidCreateEditDto dto) {
+        return dto.getBidTime().isBefore(lotService.findById(dto.getLotId()).getExpiredAt());
     }
 
 }
