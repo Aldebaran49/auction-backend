@@ -4,13 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.andreev.auction.dto.BidCreateEditDto;
+import ru.andreev.auction.dto.BidReadDto;
 import ru.andreev.auction.dto.LotCreateEditDto;
 import ru.andreev.auction.dto.LotReadDto;
+import ru.andreev.auction.mapper.BidReadMapper;
 import ru.andreev.auction.mapper.LotCreateEditMapper;
 import ru.andreev.auction.mapper.LotReadMapper;
+import ru.andreev.auction.repository.BidRepository;
 import ru.andreev.auction.repository.LotRepository;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,8 @@ public class LotService {
     private final LotRepository lotRepository;
     private final LotCreateEditMapper lotCreateEditMapper;
     private final LotReadMapper lotReadMapper;
+    private final BidRepository bidRepository;
+    private final BidReadMapper bidReadMapper;
 
     public List<LotReadDto> findAll() {
         return lotRepository.findAll().stream().map(lotReadMapper::map).toList();
@@ -64,4 +70,10 @@ public class LotService {
         );
         update(lotId, newLotDto);
     }
+
+    public Optional<Long> getWinnerId(Long lotId) {
+        return bidRepository.findTopByLotIdOrderByAmountDesc(lotId)
+                .map(bid -> bid.getUser().getId());
+    }
+
 }
