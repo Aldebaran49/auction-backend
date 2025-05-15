@@ -14,6 +14,7 @@ import ru.andreev.auction.repository.BidRepository;
 import ru.andreev.auction.repository.LotRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -76,4 +77,17 @@ public class LotService {
                 .map(bid -> bid.getUser().getId());
     }
 
+    public List<LotReadDto> findAllActive() {
+        return lotRepository.findByExpiredAtAfter(LocalDateTime.now())
+                .stream()
+                .map(lotReadMapper::map)
+                .toList();
+    }
+
+    public List<LotReadDto> findAllExpired() {
+        return lotRepository.findByExpiredAtBefore(LocalDateTime.now())
+                .stream()
+                .map(lotReadMapper::map)
+                .toList();
+    }
 }

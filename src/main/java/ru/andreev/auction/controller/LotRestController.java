@@ -19,6 +19,16 @@ public class LotRestController {
         return lotService.findAll();
     }
 
+    @GetMapping("/active")
+    public List<LotReadDto> findAllActive() {
+        return lotService.findAllActive();
+    }
+
+    @GetMapping("/expired")
+    public List<LotReadDto> findAllExpired() {
+        return lotService.findAllExpired();
+    }
+
     @GetMapping("/{id}")
     public LotReadDto findById(@PathVariable("id") Long id) {
         return lotService.findById(id);
