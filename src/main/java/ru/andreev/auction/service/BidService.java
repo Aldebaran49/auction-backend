@@ -23,8 +23,8 @@ public class BidService {
     public List<BidReadDto> findAll() {
         return bidRepository.findAll().stream().map(bidReadMapper::map).toList();
     }
-    public BidReadDto findById(Long id) {
-        return bidRepository.findById(id).map(bidReadMapper::map).orElse(null);
+    public Optional<BidReadDto> findById(Long id) {
+        return bidRepository.findById(id).map(bidReadMapper::map);
     }
     @Transactional
     public BidCreateResponse create (BidCreateEditDto dto) {
@@ -75,11 +75,11 @@ public class BidService {
     }
 
     public boolean checkBidForCorrectAmount(BidCreateEditDto dto) {
-        return dto.getAmount().compareTo(lotService.findById(dto.getLotId()).getPrice()) > 0;
+        return dto.getAmount().compareTo(lotService.findById(dto.getLotId()).get().getPrice()) > 0;
     }
 
     public boolean checkBidForCorrectTime(BidCreateEditDto dto) {
-        return dto.getBidTime().isBefore(lotService.findById(dto.getLotId()).getExpiredAt());
+        return dto.getBidTime().isBefore(lotService.findById(dto.getLotId()).get().getExpiredAt());
     }
 
 }

@@ -3,8 +3,6 @@ package ru.andreev.auction.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.andreev.auction.dto.BidCreateEditDto;
-import ru.andreev.auction.dto.BidReadDto;
 import ru.andreev.auction.dto.LotCreateEditDto;
 import ru.andreev.auction.dto.LotReadDto;
 import ru.andreev.auction.mapper.BidReadMapper;
@@ -15,7 +13,6 @@ import ru.andreev.auction.repository.LotRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +29,8 @@ public class LotService {
     public List<LotReadDto> findAll() {
         return lotRepository.findAll().stream().map(lotReadMapper::map).toList();
     }
-    public LotReadDto findById(Long id) {
-        return lotRepository.findById(id).map(lotReadMapper::map).orElse(null);
+    public Optional<LotReadDto> findById(Long id) {
+        return lotRepository.findById(id).map(lotReadMapper::map);
     }
     @Transactional
     public LotReadDto create (LotCreateEditDto dto) {
@@ -61,7 +58,7 @@ public class LotService {
     }
 
     public void updateAmount(Long lotId, BigDecimal amount) {
-        LotReadDto oldLotDto = findById(lotId);
+        LotReadDto oldLotDto = findById(lotId).get();
         LotCreateEditDto newLotDto = new LotCreateEditDto(
                 oldLotDto.getTitle(),
                 oldLotDto.getDescription(),

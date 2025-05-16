@@ -7,11 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.andreev.auction.dto.LotCreateEditDto;
 import ru.andreev.auction.dto.LotReadDto;
-import ru.andreev.auction.dto.UserReadDto;
 import ru.andreev.auction.service.LotService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/lots")
@@ -42,29 +40,28 @@ public class LotRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<LotReadDto> findById(@PathVariable("id") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(lotService.findById(id));
+        return lotService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("")
-    public ResponseEntity<LotReadDto> create(@Valid LotCreateEditDto dto) {
+    public ResponseEntity<LotReadDto> create(@Valid @RequestBody LotCreateEditDto dto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(lotService.create(dto));
     }
 
-    @PutMapping("")
-    public ResponseEntity<LotReadDto> update(Long id, @Valid LotCreateEditDto dto) {
-        Optional<LotReadDto> response = lotService.update(id, dto);
-        return response.map(lot -> ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(lot)).orElseGet(() -> ResponseEntity
-                .badRequest().body(null));
+    @PutMapping("/{id}")
+    public ResponseEntity<LotReadDto> update(@PathVariable("id") Long id,
+                                             @Valid @RequestBody LotCreateEditDto dto) {
+        return lotService.update(id, dto)
+                .map(lot -> ResponseEntity.status(HttpStatus.OK).body(lot))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("")
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
         boolean state = lotService.delete(id);
     }
 }

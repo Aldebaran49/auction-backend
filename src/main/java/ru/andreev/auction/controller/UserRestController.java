@@ -1,19 +1,15 @@
 package ru.andreev.auction.controller;
 
 import jakarta.validation.Valid;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.andreev.auction.dto.UserCreateEditDto;
 import ru.andreev.auction.dto.UserReadDto;
 import ru.andreev.auction.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,29 +27,28 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserReadDto> findById(@PathVariable("id") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(userService.findById(id));
+        return userService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("")
-    public ResponseEntity<UserReadDto> create(@Valid UserCreateEditDto dto) {
+    public ResponseEntity<UserReadDto> create(@Valid @RequestBody UserCreateEditDto dto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.create(dto));
     }
 
-    @PutMapping("")
-    public ResponseEntity<UserReadDto> update(Long id, @Valid UserCreateEditDto dto) {
-        Optional<UserReadDto> response = userService.update(id, dto);
-        return response.map(user -> ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(user)).orElseGet(() -> ResponseEntity
-                .badRequest().body(null));
+    @PutMapping("/{id}")
+    public ResponseEntity<UserReadDto> update(@PathVariable("id") Long id,
+                                              @Valid @RequestBody UserCreateEditDto dto) {
+        return userService.update(id, dto)
+                .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("")
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
         boolean status = userService.delete(id);
     }
 }

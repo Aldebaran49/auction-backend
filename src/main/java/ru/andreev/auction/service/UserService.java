@@ -1,7 +1,6 @@
 package ru.andreev.auction.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.andreev.auction.dto.UserCreateEditDto;
@@ -25,8 +24,8 @@ public class UserService {
     public List<UserReadDto> findAll() {
         return userRepository.findAll().stream().map(userReadMapper::map).toList();
     }
-    public UserReadDto findById(Long id) {
-        return userRepository.findById(id).map(userReadMapper::map).orElse(null);
+    public Optional<UserReadDto> findById(Long id) {
+        return userRepository.findById(id).map(userReadMapper::map);
     }
     @Transactional
     public UserReadDto create(UserCreateEditDto user) {
