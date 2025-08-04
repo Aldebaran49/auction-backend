@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import ru.andreev.auction.dto.UserCreateEditDto;
 import ru.andreev.auction.entity.User;
 
+import java.time.LocalDateTime;
+
 @Component
 public class UserCreateEditMapper implements Mapper<UserCreateEditDto, User>{
 
@@ -24,5 +26,6 @@ public class UserCreateEditMapper implements Mapper<UserCreateEditDto, User>{
         user.setPassword(object.getPassword());
         user.setEmail(object.getEmail());
         user.setRole(object.getRole());
+        user.setCreatedAt(LocalDateTime.now());
     }
 }

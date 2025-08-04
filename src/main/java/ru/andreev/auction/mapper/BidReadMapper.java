@@ -6,8 +6,6 @@ import ru.andreev.auction.entity.Bid;
 import ru.andreev.auction.repository.LotRepository;
 import ru.andreev.auction.repository.UserRepository;
 
-import java.util.Map;
-
 @Component
 public class BidReadMapper implements Mapper<Bid, BidReadDto> {
     UserRepository userRepository;
@@ -18,7 +16,7 @@ public class BidReadMapper implements Mapper<Bid, BidReadDto> {
                 bid.getId(),
                 bid.getAmount(),
                 bid.getBidTime(),
-                bid.getUser().getId(),
+                bid.getOwner().getId(),
                 bid.getLot().getId()
         );
     }

@@ -1,21 +1,15 @@
 package ru.andreev.auction.controller;
 
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.andreev.auction.dto.BidCreateEditDto;
-import ru.andreev.auction.dto.BidCreateResponse;
-import ru.andreev.auction.dto.BidReadDto;
-import ru.andreev.auction.service.BidService;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bids")
+@SecurityRequirement(name = "bearerAuth")
 public class BidRestController {
+    /*
     private final BidService bidService;
 
     @GetMapping("")
@@ -33,23 +27,26 @@ public class BidRestController {
     }
 
     @PostMapping("")
-    public ResponseEntity<BidCreateResponse> create(@Valid @RequestBody BidCreateEditDto dto) {
+    public ResponseEntity<BidCreateResponse> create(@Valid @RequestBody BidCreateEditDto dto,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(bidService.create(dto));
+                .body(bidService.create(dto, userDetails.getUser().getId()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BidReadDto> update(@PathVariable("id") Long id,
-                                             @Valid @RequestBody BidCreateEditDto dto) {
-        return bidService.update(id, dto)
+                                             @Valid @RequestBody BidCreateEditDto dto,
+                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return bidService.update(id, dto, userDetails.getUser().getId())
                 .map(bid -> ResponseEntity.status(HttpStatus.OK).body(bid))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        boolean state = bidService.delete(id);
+    public void delete(@PathVariable("id") Long id,
+                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        boolean state = bidService.delete(id, userDetails.getUser().getId());
     }
-
+    */
 }

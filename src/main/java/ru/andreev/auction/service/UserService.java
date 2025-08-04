@@ -1,6 +1,7 @@
 package ru.andreev.auction.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.andreev.auction.dto.UserCreateEditDto;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -29,7 +31,6 @@ public class UserService {
     }
     @Transactional
     public UserReadDto create(UserCreateEditDto user) {
-        System.out.println("!!!");
         return Optional.of(user)
                 .map(userCreateEditMapper::map)
                 .map(userRepository::save)

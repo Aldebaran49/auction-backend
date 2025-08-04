@@ -1,24 +1,22 @@
 package ru.andreev.auction.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = {"ownedLots", "bids"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +36,14 @@ public class User {
     LocalDateTime createdAt;
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "owner")
     List<Bid> bids = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "owner")
+    List<Lot> ownedLots = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "winner")
+    List<Lot> wonLots = new ArrayList<>();
 }

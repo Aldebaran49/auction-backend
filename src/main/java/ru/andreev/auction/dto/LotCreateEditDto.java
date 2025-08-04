@@ -2,6 +2,7 @@ package ru.andreev.auction.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Value;
 
 import java.math.BigDecimal;
@@ -15,9 +16,18 @@ public class LotCreateEditDto {
 
     String description;
 
-    BigDecimal price;
+    @Positive
+    BigDecimal startPrice;
 
-    LocalDateTime createdAt;
+    @Positive
+    BigDecimal bidStep;
+
+    @Positive
+    BigDecimal blitzPrice;
+
+    LocalDateTime startedAt;
 
     LocalDateTime expiredAt;
+
+    //Владелец определяется по авторизации
 }

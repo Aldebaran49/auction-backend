@@ -1,12 +1,4 @@
-db:
-  url: jdbc:postgresql://localhost:5432/hibernatetutorial
-  username: postgres
-  password: 2177
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
   datasource:
     url: jdbc:postgresql://localhost:5432/auction
     username: postgres
@@ -20,3 +12,9 @@ spring:
         hbm2ddl:
           auto: validate
     open-in-view: false
+logging:
+  level:
+    root: INFO
+    ru.andreev.auction: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
