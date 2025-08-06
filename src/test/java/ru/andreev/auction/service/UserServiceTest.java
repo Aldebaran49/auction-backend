@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+//Unit tests
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
