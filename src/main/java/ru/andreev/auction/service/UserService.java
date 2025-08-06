@@ -37,6 +37,8 @@ public class UserService {
                 .map(userReadMapper::map)
                 .orElseThrow();
     }
+
+    //add password hashing and control of updating user (uer can only update himself)
     @Transactional
     public Optional<UserReadDto> update(Long id, UserCreateEditDto dto) {
         return userRepository.findById(id).map(u -> userCreateEditMapper.map(dto, u))
