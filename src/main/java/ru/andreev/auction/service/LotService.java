@@ -40,9 +40,9 @@ public class LotService {
     @Transactional
     public LotReadDto create (LotCreateEditDto dto, Long ownerId) {
         checkLotCreateEditDtoValid(dto);
-        Lot lot = lotCreateEditMapper.map(dto);
         User owner = userRepository.findById(ownerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lot owner not found"));
+        Lot lot = lotCreateEditMapper.map(dto);
         lot.setOwner(owner);
         owner.getOwnedLots().add(lot);
 

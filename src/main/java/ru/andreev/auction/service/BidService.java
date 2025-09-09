@@ -64,7 +64,7 @@ public class BidService {
 
             Bid finalBid = bidCreateEditMapper.map(dto);
             finalBid.setAmount(lot.getBlitzPrice());
-            bidRepository.save(finalBid);
+            finalBid = bidRepository.save(finalBid);
             lotRepository.save(lot);
 
 
@@ -88,7 +88,7 @@ public class BidService {
 
         Bid bid = bidCreateEditMapper.map(dto);
         bid.setOwner(user);
-        bidRepository.save(bid);
+        bid = bidRepository.save(bid);
         lotRepository.save(lot);
         log.info("Bid was registered! User {} (id = {}), lot {} (id = {}), amount: {}",
                 user.getUsername(), user.getId(), lot.getTitle(), lot.getId(), bid.getAmount());
