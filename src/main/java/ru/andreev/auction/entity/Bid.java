@@ -1,20 +1,20 @@
 package ru.andreev.auction.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "bids")
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = {"owner", "lot"})
 public class Bid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,14 +33,5 @@ public class Bid {
     @JoinColumn(name = "lot_id")
     Lot lot;
 
-    public void setOwner(User owner) {
-        this.owner = owner;
-        this.owner.getBids().add(this);
-    }
-
-    public void setLot(Lot lot) {
-        this.lot = lot;
-        this.lot.getBids().add(this);
-    }
 
 }
